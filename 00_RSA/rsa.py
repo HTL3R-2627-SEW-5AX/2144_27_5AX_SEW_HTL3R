@@ -117,3 +117,24 @@ def encrypt_file(infile, outfile, public_key):
         f_out.write(f"{len(data)}\n")
         for number in crypt(file2ints(f_in, block_bytes), public_key):
             f_out.write(f"{number}\n")
+
+
+def decrypt_file(infile, outfile, private_key):
+    """Entschlüsselt eine mit encrypt_file erzeugte Datei und schreibt die Original-Bytes.
+
+    >>> import os, tempfile
+    >>> folder = tempfile.mkdtemp()
+    >>> src, enc, dec = (os.path.join(folder, name) for name in ("a.txt", "a.enc", "a.dec"))
+    >>> _ = open(src, "wb").write(b"Hallo RSA!")
+    >>> private, public = generate_keys(32)
+    >>> encrypt_file(src, enc, public)
+    >>> decrypt_file(enc, dec, private)
+    >>> open(dec, "rb").read()
+    b'Hallo RSA!'
+    """
+    block_bytes = private_key[2] // 8
+    with open(infile) as f:
+        length = int(f.readline())
+        numbers = [int(line) for line in f]
+    with open(outfile, "wb") as f:
+        f.write(ints2bytes(crypt(numbers, private_key), block_bytes, length))
