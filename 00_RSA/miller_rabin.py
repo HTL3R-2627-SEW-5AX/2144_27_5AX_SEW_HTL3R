@@ -85,3 +85,16 @@ def is_prime(n):
         if n % p == 0:
             return False
     return is_prim_millerrabin(n)
+
+
+def generate_prime(bits):
+    """Erzeugt eine zufällige Primzahl mit genau bits Bits (höchstes und niedrigstes Bit gesetzt).
+
+    >>> p = generate_prime(64)
+    >>> p.bit_length(), is_prime(p)
+    (64, True)
+    """
+    while True:
+        n = rnd.getrandbits(bits) | (1 << (bits - 1)) | 1
+        if is_prime(n):
+            return n
