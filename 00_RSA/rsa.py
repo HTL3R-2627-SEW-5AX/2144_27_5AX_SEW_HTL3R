@@ -60,3 +60,13 @@ def file2ints(file, block_bytes):
         if not block:
             break
         yield int.from_bytes(block.ljust(block_bytes, b"\0"), "big")
+
+
+def ints2bytes(numbers, block_bytes, length):
+    """Wandelt die Zahlen wieder in Bytes um und schneidet auf die ursprüngliche Länge ab.
+
+    >>> ints2bytes([24930, 25344], 2, 3)
+    b'abc'
+    """
+    data = b"".join(x.to_bytes(block_bytes, "big") for x in numbers)
+    return data[:length]
