@@ -97,3 +97,23 @@ def load_key(filename):
     """
     with open(filename) as f:
         return tuple(int(line) for line in f)
+
+
+def encrypt_file(infile, outfile, public_key):
+    """Verschlüsselt infile; in outfile steht zuerst die Länge, dann eine Zahl pro Zeile.
+
+    >>> import os, tempfile
+    >>> folder = tempfile.mkdtemp()
+    >>> src, enc = os.path.join(folder, "a.txt"), os.path.join(folder, "a.enc")
+    >>> _ = open(src, "wb").write(b"Hallo")
+    >>> encrypt_file(src, enc, (5, 323, 8))
+    >>> open(enc).read().split()
+    ['5', '21', '241', '109', '109', '42']
+    """
+    block_bytes = public_key[2] // 8
+    with open(infile, "rb") as f_in, open(outfile, "w") as f_out:
+        data = f_in.read()
+        f_in.seek(0)
+        f_out.write(f"{len(data)}\n")
+        for number in crypt(file2ints(f_in, block_bytes), public_key):
+            f_out.write(f"{number}\n")
