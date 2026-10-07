@@ -22,3 +22,20 @@ def first_primes(count):
             primes.append(n)
         n += 1
     return primes
+
+
+SMALL_PRIMES = first_primes(100)
+
+
+def split_n(n):
+    """Zerlegt n - 1 in 2^s * d mit ungeradem d und liefert (s, d).
+
+    >>> split_n(221)
+    (2, 55)
+    """
+    s = 0
+    d = n - 1
+    while d % 2 == 0:
+        d //= 2
+        s += 1
+    return s, d
