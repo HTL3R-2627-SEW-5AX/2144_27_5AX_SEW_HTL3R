@@ -46,3 +46,17 @@ def crypt(numbers, key):
     exponent, n, bits = key
     for x in numbers:
         yield pow(x, exponent, n)
+
+
+def file2ints(file, block_bytes):
+    """Liest eine binäre Datei blockweise und liefert jeden Block als int (letzter Block mit 0 aufgefüllt).
+
+    >>> import io
+    >>> list(file2ints(io.BytesIO(b"abc"), 2))
+    [24930, 25344]
+    """
+    while True:
+        block = file.read(block_bytes)
+        if not block:
+            break
+        yield int.from_bytes(block.ljust(block_bytes, b"\0"), "big")
