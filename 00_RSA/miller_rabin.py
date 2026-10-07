@@ -69,3 +69,19 @@ def is_prim_millerrabin(n, anzahl=20):
         if is_witness(a, n, s, d):
             return False
     return True
+
+
+def is_prime(n):
+    """Prüft n zuerst mit den ersten 100 Primzahlen und danach mit Miller-Rabin.
+
+    >>> [x for x in range(30) if is_prime(x)]
+    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+    """
+    if n < 2:
+        return False
+    for p in SMALL_PRIMES:
+        if n == p:
+            return True
+        if n % p == 0:
+            return False
+    return is_prim_millerrabin(n)
