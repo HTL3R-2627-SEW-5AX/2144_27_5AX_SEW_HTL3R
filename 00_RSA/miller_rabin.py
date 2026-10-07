@@ -110,3 +110,26 @@ def next_prime(n):
     while not is_prime(n):
         n += 1
     return n
+
+
+def to_binary_lines(n, width=12):
+    """Stellt n binär dar, mit width Zeichen pro Zeile.
+
+    >>> print(to_binary_lines(42, 3))
+    101
+    010
+    """
+    b = bin(n)[2:]
+    return "\n".join(b[i:i + width] for i in range(0, len(b), width))
+
+
+if __name__ == "__main__":
+    print("Erste Primzahl > 2^512:", next_prime(2 ** 512))
+
+    magic = 24566544301293569
+    print(f"\nIst {magic} prim? {is_prime(magic)}")
+    print(to_binary_lines(magic))
+
+    magic2 = next_prime(magic)
+    print(f"\nNächste Primzahl: {magic2}")
+    print(to_binary_lines(magic2))
