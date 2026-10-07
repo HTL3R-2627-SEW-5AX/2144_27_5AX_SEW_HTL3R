@@ -70,3 +70,17 @@ def ints2bytes(numbers, block_bytes, length):
     """
     data = b"".join(x.to_bytes(block_bytes, "big") for x in numbers)
     return data[:length]
+
+
+def save_key(key, filename):
+    """Speichert einen Key als Textdatei (eine Zahl pro Zeile).
+
+    >>> import os, tempfile
+    >>> path = os.path.join(tempfile.mkdtemp(), "test.key")
+    >>> save_key((3, 33, 4), path)
+    >>> open(path).read()
+    '3\\n33\\n4\\n'
+    """
+    with open(filename, "w") as f:
+        for value in key:
+            f.write(f"{value}\n")
