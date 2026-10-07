@@ -24,3 +24,18 @@ def pow_iterativ(x, b, n):
         x = x * x % n
         b //= 2
     return result
+
+
+def pow_rekursiv(x, b, n):
+    """Berechnet x^b mod n rekursiv, indem der Exponent immer halbiert wird.
+
+    >>> pow_rekursiv(3, 200, 50) == pow(3, 200, 50)
+    True
+    """
+    if b == 0:
+        return 1 % n
+    half = pow_rekursiv(x, b // 2, n)
+    result = half * half % n
+    if b % 2 == 1:
+        result = result * x % n
+    return result
