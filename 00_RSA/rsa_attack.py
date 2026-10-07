@@ -25,3 +25,28 @@ def fermat_factor(n, max_tries=1_000_000):
             return a - b, a + b, tries
         a += 1
     return None
+
+
+def main():
+    """Liest den Modul von der Kommandozeile und gibt die gefundenen Faktoren aus."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
+    parser.add_argument("-m", "--max", help="maximum number of tries", type=int, default=1_000_000)
+    parser.add_argument("modul", help="RSA modulus N = p * q", type=int)
+    args = parser.parse_args()
+
+    result = fermat_factor(args.modul, args.max)
+    if result is None:
+        print(f"Keine Faktoren in {args.max} Versuchen gefunden.")
+        return
+    p, q, tries = result
+    if args.verbosity:
+        print(f"Es braucht {tries} Versuche, um die Faktoren von {args.modul} zu finden:")
+        print(f" p = {p}")
+        print(f" q = {q}")
+    else:
+        print((p, q))
+
+
+if __name__ == "__main__":
+    main()
