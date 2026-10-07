@@ -55,3 +55,17 @@ def is_witness(a, n, s, d):
         if x == n - 1:
             return False
     return True
+
+
+def is_prim_millerrabin(n, anzahl=20):
+    """Miller-Rabin-Test für ungerade n > 3: True bedeutet "sehr wahrscheinlich eine Primzahl".
+
+    >>> is_prim_millerrabin(557), is_prim_millerrabin(561)
+    (True, False)
+    """
+    s, d = split_n(n)
+    for _ in range(anzahl):
+        a = rnd.randint(2, n - 2)
+        if is_witness(a, n, s, d):
+            return False
+    return True
