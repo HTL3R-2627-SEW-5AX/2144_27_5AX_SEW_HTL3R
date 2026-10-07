@@ -35,3 +35,14 @@ def generate_keys(bits):
     d = pow(e, -1, phi)
 
     return (d, n, bits), (e, n, bits)
+
+
+def crypt(numbers, key):
+    """Ver- bzw. entschlüsselt jede Zahl mit dem Key (je nachdem, ob public oder private Key).
+
+    >>> list(crypt([2, 3], (7, 33, 4)))
+    [29, 9]
+    """
+    exponent, n, bits = key
+    for x in numbers:
+        yield pow(x, exponent, n)
