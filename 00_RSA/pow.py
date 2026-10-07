@@ -39,3 +39,24 @@ def pow_rekursiv(x, b, n):
     if b % 2 == 1:
         result = result * x % n
     return result
+
+
+def measure(func, x, b, n):
+    """Ruft func(x, b, n) auf und liefert (Ergebnis, Laufzeit in Sekunden).
+
+    >>> measure(pow, 2, 10, 1000)[0]
+    24
+    """
+    start = time.perf_counter()
+    result = func(x, b, n)
+    return result, time.perf_counter() - start
+
+
+if __name__ == "__main__":
+    sys.setrecursionlimit(10000)
+    for bits in [64, 512, 2048, 4096]:
+        x, b, n = (random.getrandbits(bits) for _ in range(3))
+        print(f"{bits} Bit:")
+        for func in [pow, pow_iterativ, pow_rekursiv]:
+            result, seconds = measure(func, x, b, n)
+            print(f"  {func.__name__:<13} {seconds * 1000:8.3f} ms  richtig: {result == pow(x, b, n)}")
