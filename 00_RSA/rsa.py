@@ -84,3 +84,16 @@ def save_key(key, filename):
     with open(filename, "w") as f:
         for value in key:
             f.write(f"{value}\n")
+
+
+def load_key(filename):
+    """Liest einen Key, der mit save_key gespeichert wurde.
+
+    >>> import os, tempfile
+    >>> path = os.path.join(tempfile.mkdtemp(), "test.key")
+    >>> save_key((3, 33, 4), path)
+    >>> load_key(path)
+    (3, 33, 4)
+    """
+    with open(filename) as f:
+        return tuple(int(line) for line in f)
