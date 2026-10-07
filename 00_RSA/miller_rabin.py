@@ -39,3 +39,19 @@ def split_n(n):
         d //= 2
         s += 1
     return s, d
+
+
+def is_witness(a, n, s, d):
+    """Liefert True, wenn a beweist, dass n keine Primzahl ist.
+
+    >>> is_witness(137, 221, 2, 55), is_witness(174, 221, 2, 55)
+    (True, False)
+    """
+    x = pow(a, d, n)
+    if x == 1 or x == n - 1:
+        return False
+    for _ in range(s - 1):
+        x = pow(x, 2, n)
+        if x == n - 1:
+            return False
+    return True
