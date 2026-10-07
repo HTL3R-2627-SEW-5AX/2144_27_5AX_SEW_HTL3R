@@ -138,3 +138,34 @@ def decrypt_file(infile, outfile, private_key):
         numbers = [int(line) for line in f]
     with open(outfile, "wb") as f:
         f.write(ints2bytes(crypt(numbers, private_key), block_bytes, length))
+
+
+def main(argv=None):
+    """Wertet die Kommandozeilen-Parameter aus und startet keygen, encrypt oder decrypt."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--verbosity", help="increase output verbosity", action="store_true")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("-k", "--keygen", help="generate new keys with the given length", type=int)
+    group.add_argument("-e", "--encrypt", help="encrypt file")
+    group.add_argument("-d", "--decrypt", help="decrypt file")
+    args = parser.parse_args(argv)
+
+    if args.keygen:
+        private, public = generate_keys(args.keygen)
+        save_key(private, PRIVATE_KEY_FILE)
+        save_key(public, PUBLIC_KEY_FILE)
+        if args.verbosity:
+            print(f"Keys mit {args.keygen} Bit gespeichert in {PRIVATE_KEY_FILE} und {PUBLIC_KEY_FILE}")
+    elif args.encrypt:
+        encrypt_file(args.encrypt, args.encrypt + ".enc", load_key(PUBLIC_KEY_FILE))
+        if args.verbosity:
+            print(f"{args.encrypt} verschlüsselt -> {args.encrypt}.enc")
+    elif args.decrypt:
+        outfile = args.decrypt.removesuffix(".enc") + ".dec"
+        decrypt_file(args.decrypt, outfile, load_key(PRIVATE_KEY_FILE))
+        if args.verbosity:
+            print(f"{args.decrypt} entschlüsselt -> {outfile}")
+
+
+if __name__ == "__main__":
+    main()
